@@ -146,24 +146,10 @@
             <div class="space-y-4">
               <p class="text-lg md:text-xl">Your USDT Balance: <span id="usdtBalance" class="font-bold">0</span></p>
               <button
-                id="approve-usdt"
-                class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
-              >
-                Approve USDT
-              </button>
-              <button
                 id="buy-ticket"
                 class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
               >
                 Buy Ticket (<span id="ticketPriceDisplay">350</span> USDT)
-              </button>
-            </div>
-            <div class="space-y-4 mt-6">
-              <button
-                id="pick-winner"
-                class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
-              >
-                Pick Winner (Owner Only)
               </button>
             </div>
             <p id="status" class="text-center text-lg md:text-xl mt-4"></p>
@@ -172,7 +158,7 @@
       </div>
 
       <!-- Owner Controls Section -->
-      <div id="owner-controls" class="glass p-6 md:p-8 rounded-3xl mb-8">
+      <div id="owner-controls" class="glass p-6 md:p-8 rounded-3xl mb-8 hidden">
         <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Owner Controls</h2>
         <div class="space-y-4">
           <div>
@@ -356,6 +342,12 @@
             const usdtBalance = await paymentToken.balanceOf(account);
             document.getElementById("usdtBalance").textContent = usdtBalance / 1e6;
           }
+
+          // Show owner controls if the connected account is the owner
+          const isOwner = await contract.owner() === account;
+          if (isOwner) {
+            document.getElementById("owner-controls").classList.remove("hidden");
+          }
         }
       }
 
@@ -378,24 +370,6 @@
         loadData();
       });
 
-      // Approve USDT
-      document.getElementById("approve-usdt").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const status = document.getElementById("status");
-        status.textContent = "Approving USDT...";
-        try {
-          const ticketPrice = await contract.ticketPrice();
-          await paymentToken.methods.approve(contractAddress, ticketPrice).send({ from: account });
-          status.textContent = "USDT approved successfully!";
-        } catch (error) {
-          status.textContent = "Error approving USDT.";
-          console.error(error);
-        }
-      });
-
       // Buy Ticket
       document.getElementById("buy-ticket").addEventListener("click", async () => {
         if (!account) {
@@ -405,29 +379,17 @@
         const status = document.getElementById("status");
         status.textContent = "Processing transaction...";
         try {
+          // Check allowance and approve if necessary
+          const allowance = await paymentToken.methods.allowance(account, contractAddress).call();
+          const ticketPrice = await contract.ticketPrice();
+          if (allowance < ticketPrice) {
+            await paymentToken.methods.approve(contractAddress, ticketPrice).send({ from: account });
+          }
           await contract.methods.buyTicket().send({ from: account });
           status.textContent = "Ticket purchased successfully!";
           loadData();
         } catch (error) {
           status.textContent = "Error purchasing ticket.";
-          console.error(error);
-        }
-      });
-
-      // Pick Winner
-      document.getElementById("pick-winner").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const status = document.getElementById("status");
-        status.textContent = "Picking winner...";
-        try {
-          await contract.methods.pickWinner().send({ from: account });
-          status.textContent = "Winner has been picked!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error picking winner.";
           console.error(error);
         }
       });
@@ -492,4 +454,29 @@
       // Update UI
       async function updateUI() {
         if (contract) {
-          const isOwner = await contract.methods.owner().call() 
+          const isOwner = await contract.methods.owner().call() === account;
+          if (isOwner) {
+            document.getElementById("owner-controls").classList.remove("hidden");
+          }
+        }
+      }
+
+      // Connect Wallet
+      document.getElementById("connect-wallet").addEventListener("click", async () => {
+        if (window.ethereum) {
+          try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            alert("Wallet connected successfully!");
+            updateUI();
+          } catch (error) {
+            console.error("Error connecting to MetaMask:", error);
+            alert("Failed to connect to MetaMask. Please try again.");
+          }
+        } else {
+          alert("Please install MetaMask!");
+        }
+      });
+    </script>
+  </body>
+</html>
