@@ -110,10 +110,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <p class="text-lg md:text-xl mb-4">
-              Tickets Sold: <span id="ticketsSold" class="font-bold">0</span>/1000
+              Tickets Sold: <span id="ticketsSold" class="font-bold">0</span>/<span id="maxTickets">1000</span>
             </p>
             <p class="text-lg md:text-xl mb-4">
-              Ticket Price: <span class="font-bold">0.1 ETH</span>
+              Ticket Price: <span id="ticketPrice" class="font-bold">350 USDT</span>
             </p>
             <div class="mb-6">
               <canvas id="ticketsChart" class="w-full h-48"></canvas>
@@ -129,11 +129,18 @@
               </button>
             </div>
             <div id="buy-section" class="hidden space-y-4">
+              <p class="text-lg md:text-xl">Your USDT Balance: <span id="usdtBalance" class="font-bold">0</span></p>
+              <button
+                id="approve-usdt"
+                class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
+              >
+                Approve USDT
+              </button>
               <button
                 id="buy-ticket"
                 class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
               >
-                Buy Ticket (0.1 ETH)
+                Buy Ticket (<span id="ticketPriceDisplay">350</span> USDT)
               </button>
             </div>
             <div id="pick-winner-section" class="hidden space-y-4">
@@ -145,6 +152,58 @@
               </button>
             </div>
             <p id="status" class="text-center text-lg md:text-xl mt-4"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Owner Controls Section -->
+      <div id="owner-controls" class="glass p-6 md:p-8 rounded-3xl mb-8 hidden">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Owner Controls</h2>
+        <div class="space-y-4">
+          <div>
+            <label for="newPaymentToken" class="text-lg md:text-xl">New Payment Token Address:</label>
+            <input
+              type="text"
+              id="newPaymentToken"
+              class="w-full p-2 glass rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+              placeholder="Enter new payment token address"
+            />
+            <button
+              id="update-payment-token"
+              class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg mt-2"
+            >
+              Update Payment Token
+            </button>
+          </div>
+          <div>
+            <label for="newTicketPrice" class="text-lg md:text-xl">New Ticket Price (USDT):</label>
+            <input
+              type="number"
+              id="newTicketPrice"
+              class="w-full p-2 glass rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+              placeholder="Enter new ticket price"
+            />
+            <button
+              id="update-ticket-price"
+              class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg mt-2"
+            >
+              Update Ticket Price
+            </button>
+          </div>
+          <div>
+            <label for="newMaxTickets" class="text-lg md:text-xl">New Maximum Tickets:</label>
+            <input
+              type="number"
+              id="newMaxTickets"
+              class="w-full p-2 glass rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+              placeholder="Enter new maximum tickets"
+            />
+            <button
+              id="update-max-tickets"
+              class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg mt-2"
+            >
+              Update Max Tickets
+            </button>
           </div>
         </div>
       </div>
@@ -168,11 +227,11 @@
       <div id="rules" class="glass p-6 md:p-8 rounded-3xl mb-8">
         <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Lottery Rules</h2>
         <div class="text-left space-y-4">
-          <p class="text-lg md:text-xl">1. Each ticket costs <span class="font-bold">0.1 ETH</span>.</p>
+          <p class="text-lg md:text-xl">1. Each ticket costs <span class="font-bold">350 USDT</span>.</p>
           <p class="text-lg md:text-xl">2. Only <span class="font-bold">1,000 tickets</span> will be sold.</p>
           <p class="text-lg md:text-xl">3. Once all tickets are sold, the lottery will close, and a winner will be selected randomly.</p>
           <p class="text-lg md:text-xl">4. The winner will receive the <span class="font-bold">Rolex Daytona Yellow Gold</span>.</p>
-          <p class="text-lg md:text-xl">5. ETH paid for tickets will be sent directly to the contract owner's wallet.</p>
+          <p class="text-lg md:text-xl">5. USDT paid for tickets will be sent directly to the contract owner's wallet.</p>
           <p class="text-lg md:text-xl">6. Only the contract owner can pick the winner.</p>
           <p class="text-lg md:text-xl">7. By participating, you agree to these rules and the terms of the lottery.</p>
         </div>
@@ -185,7 +244,7 @@
           Welcome to the <span class="font-bold">Rolex Daytona Lottery</span>, where luxury meets opportunity! This exclusive event gives you the chance to win the iconic <span class="font-bold">Rolex Daytona Yellow Gold</span>, a timepiece synonymous with precision, elegance, and status.
         </p>
         <p class="text-lg md:text-xl mb-4">
-          With only <span class="font-bold">1,000 tickets</span> available, this is your opportunity to own a piece of horological history. Each ticket costs just <span class="font-bold">0.1 ETH</span>, and the winner will be selected randomly once all tickets are sold.
+          With only <span class="font-bold">1,000 tickets</span> available, this is your opportunity to own a piece of horological history. Each ticket costs just <span class="font-bold">350 USDT</span>, and the winner will be selected randomly once all tickets are sold.
         </p>
         <p class="text-lg md:text-xl">
           Don't miss your chance to own this masterpiece. Enter the lottery today and let fate decide!
@@ -209,6 +268,7 @@
       let web3;
       let contract;
       let account;
+      let paymentToken;
 
       // Initialize Chart
       const ctx = document.getElementById("ticketsChart").getContext("2d");
@@ -254,10 +314,16 @@
       // Load Real Data from Smart Contract
       async function loadData() {
         if (contract) {
-          const ticketsSold = await contract.methods.ticketsSold().call();
-          document.getElementById("ticketsSold").textContent = ticketsSold;
+          const ticketsSold = await contract.ticketsSold();
+          const maxTickets = await contract.maxTickets();
+          const ticketPrice = await contract.ticketPrice();
+          const winners = await contract.getWinners();
 
-          const winners = await contract.methods.getWinners().call();
+          document.getElementById("ticketsSold").textContent = ticketsSold;
+          document.getElementById("maxTickets").textContent = maxTickets;
+          document.getElementById("ticketPrice").textContent = `${ticketPrice / 1e6} USDT`;
+          document.getElementById("ticketPriceDisplay").textContent = ticketPrice / 1e6;
+
           const winnersTable = document.getElementById("winnersTable");
           winnersTable.innerHTML = winners.map(winner => `<tr><td class="p-3">${winner}</td></tr>`).join("");
 
@@ -269,6 +335,19 @@
             chart.data.datasets[0].data.shift();
           }
           chart.update();
+
+          // Show owner controls if the connected account is the owner
+          const isOwner = await contract.owner() === account;
+          if (isOwner) {
+            document.getElementById("owner-controls").classList.remove("hidden");
+            document.getElementById("pick-winner-section").classList.remove("hidden");
+          }
+
+          // Load USDT balance
+          if (account) {
+            const usdtBalance = await paymentToken.balanceOf(account);
+            document.getElementById("usdtBalance").textContent = usdtBalance / 1e6;
+          }
         }
       }
 
@@ -280,6 +359,7 @@
             await window.ethereum.enable();
             contract = new web3.eth.Contract(abi, contractAddress);
             account = (await web3.eth.getAccounts())[0];
+            paymentToken = new web3.eth.Contract(abi, await contract.paymentToken());
             updateUI();
           } catch (error) {
             console.error("User denied account access or error occurred:", error);
@@ -290,12 +370,26 @@
         loadData();
       });
 
+      // Approve USDT
+      document.getElementById("approve-usdt").addEventListener("click", async () => {
+        const status = document.getElementById("status");
+        status.textContent = "Approving USDT...";
+        try {
+          const ticketPrice = await contract.ticketPrice();
+          await paymentToken.methods.approve(contractAddress, ticketPrice).send({ from: account });
+          status.textContent = "USDT approved successfully!";
+        } catch (error) {
+          status.textContent = "Error approving USDT.";
+          console.error(error);
+        }
+      });
+
       // Buy Ticket
       document.getElementById("buy-ticket").addEventListener("click", async () => {
         const status = document.getElementById("status");
         status.textContent = "Processing transaction...";
         try {
-          await contract.methods.buyTicket().send({ from: account, value: web3.utils.toWei("0.1", "ether") });
+          await contract.methods.buyTicket().send({ from: account });
           status.textContent = "Ticket purchased successfully!";
           loadData();
         } catch (error) {
@@ -318,6 +412,51 @@
         }
       });
 
+      // Update Payment Token
+      document.getElementById("update-payment-token").addEventListener("click", async () => {
+        const newPaymentToken = document.getElementById("newPaymentToken").value;
+        const status = document.getElementById("status");
+        status.textContent = "Updating payment token...";
+        try {
+          await contract.methods.setPaymentToken(newPaymentToken).send({ from: account });
+          status.textContent = "Payment token updated successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error updating payment token.";
+          console.error(error);
+        }
+      });
+
+      // Update Ticket Price
+      document.getElementById("update-ticket-price").addEventListener("click", async () => {
+        const newTicketPrice = document.getElementById("newTicketPrice").value;
+        const status = document.getElementById("status");
+        status.textContent = "Updating ticket price...";
+        try {
+          await contract.methods.setTicketPrice(newTicketPrice * 1e6).send({ from: account });
+          status.textContent = "Ticket price updated successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error updating ticket price.";
+          console.error(error);
+        }
+      });
+
+      // Update Max Tickets
+      document.getElementById("update-max-tickets").addEventListener("click", async () => {
+        const newMaxTickets = document.getElementById("newMaxTickets").value;
+        const status = document.getElementById("status");
+        status.textContent = "Updating max tickets...";
+        try {
+          await contract.methods.setMaxTickets(newMaxTickets).send({ from: account });
+          status.textContent = "Max tickets updated successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error updating max tickets.";
+          console.error(error);
+        }
+      });
+
       // Update UI
       async function updateUI() {
         if (contract) {
@@ -335,16 +474,4 @@
           try {
             const provider = new ethers.providers.Web3Provider(window.ethereum);
             await provider.send("eth_requestAccounts", []);
-            alert("Wallet connected successfully!");
-            updateUI();
-          } catch (error) {
-            console.error("Error connecting to MetaMask:", error);
-            alert("Failed to connect to MetaMask. Please try again.");
-          }
-        } else {
-          alert("Please install MetaMask!");
-        }
-      });
-    </script>
-  </body>
-</html>
+            alert("Wallet connected successfull
