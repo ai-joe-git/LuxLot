@@ -150,7 +150,7 @@
             </tr>
           </thead>
           <tbody id="winnersTable">
-            <!-- Winners will be populated here -->
+            <!-- Mock Winners will be populated here -->
           </tbody>
         </table>
       </div>
@@ -205,22 +205,33 @@
         },
       });
 
-      // Simulate real-time updates
+      // Mock Sales Data for Chart
       let time = 0;
-      setInterval(async () => {
-        if (contract) {
-          const ticketsSold = await contract.methods.ticketsSold().call();
-          document.getElementById("ticketsSold").textContent = ticketsSold;
-          time += 1;
-          chart.data.labels.push(`T+${time}`);
-          chart.data.datasets[0].data.push(ticketsSold);
-          if (chart.data.labels.length > 20) {
-            chart.data.labels.shift();
-            chart.data.datasets[0].data.shift();
-          }
-          chart.update();
+      let mockTicketsSold = 0;
+      setInterval(() => {
+        time += 1;
+        mockTicketsSold += Math.floor(Math.random() * 5); // Simulate ticket sales
+        if (mockTicketsSold > 1000) mockTicketsSold = 1000; // Cap at max tickets
+        document.getElementById("ticketsSold").textContent = mockTicketsSold;
+        chart.data.labels.push(`T+${time}`);
+        chart.data.datasets[0].data.push(mockTicketsSold);
+        if (chart.data.labels.length > 20) {
+          chart.data.labels.shift();
+          chart.data.datasets[0].data.shift();
         }
+        chart.update();
       }, 1000);
+
+      // Mock Past Winners
+      const mockWinners = [
+        "0x1234...abcd",
+        "0x5678...efgh",
+        "0x9101...ijkl",
+        "0x1121...mnop",
+        "0x3141...qrst",
+      ];
+      const winnersTable = document.getElementById("winnersTable");
+      winnersTable.innerHTML = mockWinners.map(winner => `<tr><td class="p-3">${winner}</td></tr>`).join("");
 
       // Initialize Web3 and Contract
       window.addEventListener("load", async () => {
