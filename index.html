@@ -56,6 +56,21 @@
       .transition-all {
         transition: all 0.3s ease;
       }
+      /* Image Animation */
+      @keyframes float {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+      .floating-image {
+        animation: float 4s ease-in-out infinite;
+      }
     </style>
   </head>
   <body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
@@ -100,7 +115,7 @@
         <img
           src="gold-rolex-daytona-watch-rolex-day-date-gold-9354524b43dead1981a20444dafb37fc.png"
           alt="Rolex Daytona Yellow Gold"
-          class="w-full max-w-md rounded-lg shadow-lg"
+          class="w-full max-w-md rounded-lg shadow-lg floating-image"
         />
       </div>
 
@@ -128,7 +143,7 @@
                 Connect Wallet
               </button>
             </div>
-            <div id="buy-section" class="hidden space-y-4">
+            <div class="space-y-4">
               <p class="text-lg md:text-xl">Your USDT Balance: <span id="usdtBalance" class="font-bold">0</span></p>
               <button
                 id="approve-usdt"
@@ -143,7 +158,7 @@
                 Buy Ticket (<span id="ticketPriceDisplay">350</span> USDT)
               </button>
             </div>
-            <div id="pick-winner-section" class="hidden space-y-4">
+            <div class="space-y-4 mt-6">
               <button
                 id="pick-winner"
                 class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
@@ -157,7 +172,7 @@
       </div>
 
       <!-- Owner Controls Section -->
-      <div id="owner-controls" class="glass p-6 md:p-8 rounded-3xl mb-8 hidden">
+      <div id="owner-controls" class="glass p-6 md:p-8 rounded-3xl mb-8">
         <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Owner Controls</h2>
         <div class="space-y-4">
           <div>
@@ -336,13 +351,6 @@
           }
           chart.update();
 
-          // Show owner controls if the connected account is the owner
-          const isOwner = await contract.owner() === account;
-          if (isOwner) {
-            document.getElementById("owner-controls").classList.remove("hidden");
-            document.getElementById("pick-winner-section").classList.remove("hidden");
-          }
-
           // Load USDT balance
           if (account) {
             const usdtBalance = await paymentToken.balanceOf(account);
@@ -372,6 +380,10 @@
 
       // Approve USDT
       document.getElementById("approve-usdt").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
         const status = document.getElementById("status");
         status.textContent = "Approving USDT...";
         try {
@@ -386,6 +398,10 @@
 
       // Buy Ticket
       document.getElementById("buy-ticket").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
         const status = document.getElementById("status");
         status.textContent = "Processing transaction...";
         try {
@@ -400,6 +416,10 @@
 
       // Pick Winner
       document.getElementById("pick-winner").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
         const status = document.getElementById("status");
         status.textContent = "Picking winner...";
         try {
@@ -414,6 +434,10 @@
 
       // Update Payment Token
       document.getElementById("update-payment-token").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
         const newPaymentToken = document.getElementById("newPaymentToken").value;
         const status = document.getElementById("status");
         status.textContent = "Updating payment token...";
@@ -429,6 +453,10 @@
 
       // Update Ticket Price
       document.getElementById("update-ticket-price").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
         const newTicketPrice = document.getElementById("newTicketPrice").value;
         const status = document.getElementById("status");
         status.textContent = "Updating ticket price...";
@@ -444,6 +472,10 @@
 
       // Update Max Tickets
       document.getElementById("update-max-tickets").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
         const newMaxTickets = document.getElementById("newMaxTickets").value;
         const status = document.getElementById("status");
         status.textContent = "Updating max tickets...";
@@ -460,18 +492,4 @@
       // Update UI
       async function updateUI() {
         if (contract) {
-          const isOwner = await contract.methods.owner().call() === account;
-          if (isOwner) {
-            document.getElementById("pick-winner-section").classList.remove("hidden");
-          }
-          document.getElementById("buy-section").classList.remove("hidden");
-        }
-      }
-
-      // Connect Wallet
-      document.getElementById("connect-wallet").addEventListener("click", async () => {
-        if (window.ethereum) {
-          try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            await provider.send("eth_requestAccounts", []);
-            alert("Wallet connected successfull
+          const isOwner = await contract.methods.owner().call() 
