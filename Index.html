@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rolex Daytona Lottery</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Ethers.js CDN -->
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* Custom Glassmorphism and Neon Effects */
+      .glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      .neon-text {
+        background: linear-gradient(45deg, #a855f7, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .neon-button {
+        background: linear-gradient(45deg, #a855f7, #3b82f6);
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .neon-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.6), 0 0 30px rgba(59, 130, 246, 0.6);
+      }
+      /* Animated Neon Grid Background */
+      @keyframes moveGrid {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 100px 100px;
+        }
+      }
+      .animated-grid {
+        background: radial-gradient(circle, transparent 20%, #000 20%, #000 80%, transparent 80%, transparent),
+          radial-gradient(circle, transparent 20%, #000 20%, #000 80%, transparent 80%, transparent) 50px 50px,
+          linear-gradient(#a855f7 2px, transparent 2px) 0 -1px,
+          linear-gradient(90deg, #a855f7 2px, transparent 2px) -1px 0;
+        background-size: 100px 100px, 100px 100px, 50px 50px, 50px 50px;
+        animation: moveGrid 4s linear infinite;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+    <!-- Animated Neon Grid Background -->
+    <div class="animated-grid absolute inset-0 opacity-20"></div>
+
+    <!-- Glassmorphism Container -->
+    <div class="relative max-w-4xl mx-auto p-4 md:p-8 glass rounded-3xl shadow-2xl mt-10 md:mt-20">
+      <h1 class="text-3xl md:text-5xl font-bold text-center mb-6 md:mb-8 neon-text">Win a Rolex Daytona Yellow Gold</h1>
+
+      <!-- Event Description -->
+      <div class="text-center mb-8">
+        <p class="text-lg md:text-xl mb-4">
+          🎉 <span class="font-bold">Your Chance to Own a Legend!</span> 🎉
+        </p>
+        <p class="text-lg md:text-xl mb-4">
+          Enter the exclusive lottery for a chance to win the iconic <span class="font-bold">Rolex Daytona Yellow Gold</span> – a symbol of luxury, precision, and timeless elegance.
+        </p>
+        <p class="text-lg md:text-xl mb-4">
+          With only <span class="font-bold">1,000 tickets</span> available, don't miss your opportunity to own this masterpiece. Each ticket costs just <span class="font-bold">0.1 ETH</span>.
+        </p>
+        <p class="text-lg md:text-xl mb-4">
+          🏆 <span class="font-bold">One Lucky Winner</span> will walk away with this exquisite timepiece. Will it be you?
+        </p>
+      </div>
+
+      <!-- Lottery Information -->
+      <div class="text-center mb-6">
+        <p class="text-lg md:text-xl">Tickets Sold: <span id="ticketsSold" class="font-bold">0</span>/1000</p>
+        <p class="text-lg md:text-xl">Ticket Price: <span class="font-bold">0.1 ETH</span></p>
+      </div>
+
+      <!-- Real-Time Chart -->
+      <div class="mb-6">
+        <canvas id="ticketsChart" class="w-full h-64"></canvas>
+      </div>
+
+      <!-- Wallet Connection -->
+      <div id="wallet-section" class="mb-6">
+        <button
+          id="connect-wallet"
+          class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
+        >
+          Connect Wallet
+        </button>
+      </div>
+
+      <!-- Buy Ticket Section -->
+      <div id="buy-section" class="hidden space-y-4">
+        <button
+          id="buy-ticket"
+          class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
+        >
+          Buy Ticket (0.1 ETH)
+        </button>
+      </div>
+
+      <!-- Pick Winner Section (Owner Only) -->
+      <div id="pick-winner-section" class="hidden space-y-4">
+        <button
+          id="pick-winner"
+          class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
+        >
+          Pick Winner (Owner Only)
+        </button>
+      </div>
+
+      <!-- Status Messages -->
+      <p id="status" class="text-center text-lg md:text-xl mt-4"></p>
+
+      <!-- Rules Section -->
+      <div class="mt-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 neon-text">Lottery Rules</h2>
+        <div class="text-left space-y-4">
+          <p class="text-lg md:text-xl">1. Each ticket costs <span class="font-bold">0.1 ETH</span>.</p>
+          <p class="text-lg md:text-xl">2. Only <span class="font-bold">1,000 tickets</span> will be sold.</p>
+          <p class="text-lg md:text-xl">3. Once all tickets are sold, the lottery will close, and a winner will be selected randomly.</p>
+          <p class="text-lg md:text-xl">4. The winner will receive the <span class="font-bold">Rolex Daytona Yellow Gold</span>.</p>
+          <p class="text-lg md:text-xl">5. ETH paid for tickets will be sent directly to the contract owner's wallet.</p>
+          <p class="text-lg md:text-xl">6. Only the contract owner can pick the winner.</p>
+          <p class="text-lg md:text-xl">7. By participating, you agree to these rules and the terms of the lottery.</p>
+        </div>
+      </div>
+
+      <!-- Past Winners Table -->
+      <div class="mt-8">
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-4 neon-text">Past Winners</h2>
+        <table class="w-full glass rounded-lg overflow-hidden">
+          <thead>
+            <tr>
+              <th class="p-3 text-left">Winner Address</th>
+            </tr>
+          </thead>
+          <tbody id="winnersTable">
+            <!-- Winners will be populated here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      const contractAddress = "YOUR_CONTRACT_ADDRESS"; // Replace with your contract address
+      const abi = [ /* Replace with your contract ABI */ ];
+
+      let web3;
+      let contract;
+      let account;
+
+      // Initialize Chart
+      const ctx = document.getElementById("ticketsChart").getContext("2d");
+      const chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: [], // Time labels
+          datasets: [
+            {
+              label: "Tickets Sold",
+              data: [], // Tickets sold data
+              borderColor: "#a855f7",
+              backgroundColor: "rgba(168, 85, 247, 0.1)",
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: "Time",
+              },
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: "Tickets Sold",
+              },
+              suggestedMin: 0,
+              suggestedMax: 1000,
+            },
+          },
+        },
+      });
+
+      // Simulate real-time updates
+      let time = 0;
+      setInterval(async () => {
+        if (contract) {
+          const ticketsSold = await contract.methods.ticketsSold().call();
+          document.getElementById("ticketsSold").textContent = ticketsSold;
+          time += 1;
+          chart.data.labels.push(`T+${time}`);
+          chart.data.datasets[0].data.push(ticketsSold);
+          if (chart.data.labels.length > 20) {
+            chart.data.labels.shift();
+            chart.data.datasets[0].data.shift();
+          }
+          chart.update();
+        }
+      }, 1000);
+
+      // Initialize Web3 and Contract
+      window.addEventListener("load", async () => {
+        if (typeof window.ethereum !== "undefined") {
+          web3 = new Web3(window.ethereum);
+          try {
+            await window.ethereum.enable();
+            contract = new web3.eth.Contract(abi, contractAddress);
+            account = (await web3.eth.getAccounts())[0];
+            updateUI();
+          } catch (error) {
+            console.error("User denied account access or error occurred:", error);
+          }
+        } else {
+          console.log("MetaMask is not installed. DApp will run in read-only mode.");
+        }
+        loadData();
+      });
+
+      // Load Lottery Data
+      async function loadData() {
+        if (contract) {
+          const ticketsSold = await contract.methods.ticketsSold().call();
+          document.getElementById("ticketsSold").textContent = ticketsSold;
+
+          const winners = await contract.methods.getWinners().call();
+          const winnersTable = document.getElementById("winnersTable");
+          winnersTable.innerHTML = winners.map(winner => `<tr><td class="p-3">${winner}</td></tr>`).join("");
+        }
+      }
+
+      // Buy Ticket
+      document.getElementById("buy-ticket").addEventListener("click", async () => {
+        const status = document.getElementById("status");
+        status.textContent = "Processing transaction...";
+        try {
+          await contract.methods.buyTicket().send({ from: account, value: web3.utils.toWei("0.1", "ether") });
+          status.textContent = "Ticket purchased successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error purchasing ticket.";
+          console.error(error);
+        }
+      });
+
+      // Pick Winner
+      document.getElementById("pick-winner").addEventListener("click", async () => {
+        const status = document.getElementById("status");
+        status.textContent = "Picking winner...";
+        try {
+          await contract.methods.pickWinner().send({ from: account });
+          status.textContent = "Winner has been picked!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error picking winner.";
+          console.error(error);
+        }
+      });
+
+      // Update UI
+      async function updateUI() {
+        if (contract) {
+          const isOwner = await contract.methods.owner().call() === account;
+          if (isOwner) {
+            document.getElementById("pick-winner-section").classList.remove("hidden");
+          }
+          document.getElementById("buy-section").classList.remove("hidden");
+        }
+      }
+
+      // Connect Wallet
+      document.getElementById("connect-wallet").addEventListener("click", async () => {
+        if (window.ethereum) {
+          try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            alert("Wallet connected successfully!");
+            updateUI();
+          } catch (error) {
+            console.error("Error connecting to MetaMask:", error);
+            alert("Failed to connect to MetaMask. Please try again.");
+          }
+        } else {
+          alert("Please install MetaMask!");
+        }
+      });
+    </script>
+  </body>
+</html>
