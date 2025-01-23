@@ -6,8 +6,8 @@
     <title>EliteDraw - Win Luxury Prizes</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Ethers.js CDN -->
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js"></script>
+    <!-- WalletConnect CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@walletconnect/web3-provider@1.7.8/dist/umd/index.min.js"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -177,58 +177,6 @@
         </div>
       </div>
 
-      <!-- Owner Controls Section -->
-      <div id="owner-controls" class="glass p-6 md:p-8 rounded-3xl mb-8 hidden">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Owner Controls</h2>
-        <div class="space-y-4">
-          <div>
-            <label for="newPaymentToken" class="text-lg md:text-xl">New Payment Token Address:</label>
-            <input
-              type="text"
-              id="newPaymentToken"
-              class="w-full p-2 glass rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              placeholder="Enter new payment token address"
-            />
-            <button
-              id="update-payment-token"
-              class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg mt-2"
-            >
-              Update Payment Token
-            </button>
-          </div>
-          <div>
-            <label for="newTicketPrice" class="text-lg md:text-xl">New Ticket Price (USDT):</label>
-            <input
-              type="number"
-              id="newTicketPrice"
-              class="w-full p-2 glass rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              placeholder="Enter new ticket price"
-            />
-            <button
-              id="update-ticket-price"
-              class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg mt-2"
-            >
-              Update Ticket Price
-            </button>
-          </div>
-          <div>
-            <label for="newMaxTickets" class="text-lg md:text-xl">New Maximum Tickets:</label>
-            <input
-              type="number"
-              id="newMaxTickets"
-              class="w-full p-2 glass rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
-              placeholder="Enter new maximum tickets"
-            />
-            <button
-              id="update-max-tickets"
-              class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg mt-2"
-            >
-              Update Max Tickets
-            </button>
-          </div>
-        </div>
-      </div>
-
       <!-- Winners Section -->
       <div id="winners" class="glass p-6 md:p-8 rounded-3xl mb-8">
         <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Past Winners</h2>
@@ -250,9 +198,9 @@
         <div class="text-left space-y-4">
           <p class="text-lg md:text-xl">1. Each ticket costs <span class="font-bold">350 USDT</span>.</p>
           <p class="text-lg md:text-xl">2. Only <span class="font-bold">1,000 tickets</span> will be sold.</p>
-          <p class="text-lg md:text-xl">3. Once all tickets are sold, the draw will close, and a winner will be selected randomly by the smart contract.</p>
+          <p class="text-lg md:text-xl">3. Once all tickets are sold, the draw will close, and a winner will be selected manually by the owner.</p>
           <p class="text-lg md:text-xl">4. The winner will receive the <span class="font-bold">luxury prize</span> (e.g., Rolex Daytona, Hermès bag, Lamborghini, etc.).</p>
-          <p class="text-lg md:text-xl">5. USDT paid for tickets will be sent directly to the contract owner's wallet.</p>
+          <p class="text-lg md:text-xl">5. USDT paid for tickets will be sent directly to the owner's wallet.</p>
           <p class="text-lg md:text-xl">6. By participating, you agree to these rules and the terms of the draw.</p>
         </div>
       </div>
@@ -262,13 +210,13 @@
         <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">FAQ</h2>
         <div class="text-left space-y-4">
           <p class="text-lg md:text-xl"><span class="font-bold">Q: How is the winner selected?</span></p>
-          <p class="text-lg md:text-xl">A: The winner is selected randomly by the smart contract once all tickets are sold.</p>
+          <p class="text-lg md:text-xl">A: The winner is selected manually by the owner once all tickets are sold.</p>
           <p class="text-lg md:text-xl"><span class="font-bold">Q: How can I prove that I am the winner?</span></p>
-          <p class="text-lg md:text-xl">A: The winner will be announced on the blockchain. To claim your prize, you will need to send a message through the official Telegram chat of the dApp with your wallet address and a signed message proving ownership of the address.</p>
+          <p class="text-lg md:text-xl">A: The winner will be announced on the website. To claim your prize, you will need to contact the owner through the official Telegram chat with your wallet address and proof of transaction.</p>
           <p class="text-lg md:text-xl"><span class="font-bold">Q: What happens if not all tickets are sold?</span></p>
           <p class="text-lg md:text-xl">A: If not all tickets are sold within a specified time frame, the draw will be canceled, and all participants will be refunded their USDT.</p>
           <p class="text-lg md:text-xl"><span class="font-bold">Q: How do I connect my wallet?</span></p>
-          <p class="text-lg md:text-xl">A: Click the "Connect Wallet" button and follow the prompts in your MetaMask or other Ethereum wallet.</p>
+          <p class="text-lg md:text-xl">A: Click the "Connect Wallet" button and follow the prompts in your WalletConnect-supported wallet.</p>
         </div>
       </div>
 
@@ -279,26 +227,11 @@
           Welcome to <span class="font-bold">EliteDraw</span>, where luxury meets opportunity! This exclusive platform gives you the chance to win iconic luxury items, from Rolex watches to Hermès bags, Lamborghinis, and more.
         </p>
         <p class="text-lg md:text-xl mb-4">
-          With only <span class="font-bold">1,000 tickets</span> available per draw, this is your opportunity to own a piece of luxury. Each ticket costs just <span class="font-bold">350 USDT</span>, and the winner will be selected randomly once all tickets are sold.
+          With only <span class="font-bold">1,000 tickets</span> available per draw, this is your opportunity to own a piece of luxury. Each ticket costs just <span class="font-bold">350 USDT</span>, and the winner will be selected manually once all tickets are sold.
         </p>
         <p class="text-lg md:text-xl">
           Don't miss your chance to own a masterpiece. Enter the draw today and let fate decide!
         </p>
-      </div>
-
-      <!-- Terms and Conditions Section -->
-      <div id="terms" class="glass p-6 md:p-8 rounded-3xl mb-8">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Terms and Conditions</h2>
-        <div class="text-left space-y-4">
-          <p class="text-lg md:text-xl">1. By participating in EliteDraw, you agree to these terms and conditions.</p>
-          <p class="text-lg md:text-xl">2. The draw is open to individuals who are 18 years of age or older.</p>
-          <p class="text-lg md:text-xl">3. The draw is conducted on the Ethereum blockchain, and all transactions are final and irreversible.</p>
-          <p class="text-lg md:text-xl">4. The winner will be selected randomly by the smart contract and announced on the blockchain.</p>
-          <p class="text-lg md:text-xl">5. The winner must prove their identity by sending a signed message from their wallet address through the official Telegram chat of the dApp.</p>
-          <p class="text-lg md:text-xl">6. The luxury prize will be shipped to the winner's provided address within 30 days of the draw closing.</p>
-          <p class="text-lg md:text-xl">7. The organizers reserve the right to cancel or modify the draw at any time due to unforeseen circumstances.</p>
-          <p class="text-lg md:text-xl">8. All decisions made by the organizers are final and binding.</p>
-        </div>
       </div>
 
       <!-- Footer with Social Links -->
@@ -323,6 +256,19 @@
       </footer>
     </div>
 
+    <!-- WalletConnect Modal -->
+    <div id="walletconnect-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center">
+      <div class="glass p-6 rounded-3xl">
+        <h2 class="text-2xl font-bold neon-text mb-4">Connect Wallet</h2>
+        <button id="walletconnect-connect" class="w-full py-2 neon-button rounded-lg text-white font-bold text-lg">
+          Connect with WalletConnect
+        </button>
+        <button id="close-modal" class="w-full py-2 mt-4 glass rounded-lg text-white font-bold text-lg">
+          Close
+        </button>
+      </div>
+    </div>
+
     <script>
       // JavaScript for Mobile Menu Toggle
       const menuToggle = document.getElementById("menu-toggle");
@@ -332,25 +278,39 @@
         mobileMenu.classList.toggle("hidden");
       });
 
-      // Initialize Web3 and Contract
-      const contractAddress = "YOUR_CONTRACT_ADDRESS"; // Replace with your contract address
-      const abi = [ /* Replace with your contract ABI */ ];
+      // WalletConnect Initialization
+      const WalletConnectProvider = window.WalletConnectProvider.default;
+      let provider;
 
-      let web3;
-      let contract;
-      let account;
-      let paymentToken;
+      async function initWalletConnect() {
+        provider = new WalletConnectProvider({
+          infuraId: "YOUR_INFURA_PROJECT_ID", // Replace with your Infura Project ID
+        });
 
-      // Initialize Chart
+        await provider.enable();
+        document.getElementById("walletconnect-modal").classList.add("hidden");
+        document.getElementById("connect-wallet").textContent = "Wallet Connected";
+      }
+
+      document.getElementById("connect-wallet").addEventListener("click", () => {
+        document.getElementById("walletconnect-modal").classList.remove("hidden");
+      });
+
+      document.getElementById("walletconnect-connect").addEventListener("click", initWalletConnect);
+      document.getElementById("close-modal").addEventListener("click", () => {
+        document.getElementById("walletconnect-modal").classList.add("hidden");
+      });
+
+      // Chart Initialization
       const ctx = document.getElementById("ticketsChart").getContext("2d");
       const chart = new Chart(ctx, {
         type: "line",
         data: {
-          labels: [], // Time labels
+          labels: [],
           datasets: [
             {
               label: "Tickets Sold",
-              data: [], // Tickets sold data
+              data: [],
               borderColor: "#a855f7",
               backgroundColor: "rgba(168, 85, 247, 0.1)",
               fill: true,
@@ -366,187 +326,36 @@
               display: true,
               title: {
                 display: true,
-                text: "Time",
+                text: "Tickets",
               },
             },
             y: {
               display: true,
               title: {
                 display: true,
-                text: "Tickets Sold",
+                text: "Count",
               },
-              suggestedMin: 0,
-              suggestedMax: 1000,
             },
           },
         },
       });
 
-      // Load Real Data from Smart Contract
-      async function loadData() {
-        if (contract) {
-          const ticketsSold = await contract.ticketsSold();
-          const maxTickets = await contract.maxTickets();
-          const ticketPrice = await contract.ticketPrice();
-          const winners = await contract.getWinners();
+      // Update Chart Function
+      function updateChart(ticketsSold) {
+        chart.data.labels = Array.from({ length: ticketsSold }, (_, i) => `Ticket ${i + 1}`);
+        chart.data.datasets[0].data = Array.from({ length: ticketsSold }, (_, i) => i + 1);
+        chart.update();
+      }
 
+      // Simulate Ticket Sales (Replace with actual logic)
+      let ticketsSold = 0;
+      setInterval(() => {
+        if (ticketsSold < 1000) {
+          ticketsSold += 1;
           document.getElementById("ticketsSold").textContent = ticketsSold;
-          document.getElementById("maxTickets").textContent = maxTickets;
-          document.getElementById("ticketPrice").textContent = `${ticketPrice / 1e6} USDT`;
-          document.getElementById("ticketPriceDisplay").textContent = ticketPrice / 1e6;
-
-          const winnersTable = document.getElementById("winnersTable");
-          winnersTable.innerHTML = winners.map(winner => `<tr><td class="p-3">${winner}</td></tr>`).join("");
-
-          // Update Chart with Real Data
-          chart.data.labels.push(`T+${chart.data.labels.length + 1}`);
-          chart.data.datasets[0].data.push(ticketsSold);
-          if (chart.data.labels.length > 20) {
-            chart.data.labels.shift();
-            chart.data.datasets[0].data.shift();
-          }
-          chart.update();
-
-          // Load USDT balance
-          if (account) {
-            const usdtBalance = await paymentToken.balanceOf(account);
-            document.getElementById("usdtBalance").textContent = usdtBalance / 1e6;
-          }
-
-          // Show owner controls if the connected account is the owner
-          const isOwner = await contract.owner() === account;
-          if (isOwner) {
-            document.getElementById("owner-controls").classList.remove("hidden");
-          }
+          updateChart(ticketsSold);
         }
-      }
-
-      // Initialize Web3 and Contract
-      window.addEventListener("load", async () => {
-        if (typeof window.ethereum !== "undefined") {
-          web3 = new Web3(window.ethereum);
-          try {
-            await window.ethereum.enable();
-            contract = new web3.eth.Contract(abi, contractAddress);
-            account = (await web3.eth.getAccounts())[0];
-            paymentToken = new web3.eth.Contract(abi, await contract.paymentToken());
-            updateUI();
-          } catch (error) {
-            console.error("User denied account access or error occurred:", error);
-          }
-        } else {
-          console.log("MetaMask is not installed. DApp will run in read-only mode.");
-        }
-        loadData();
-      });
-
-      // Buy Ticket
-      document.getElementById("buy-ticket").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const status = document.getElementById("status");
-        status.textContent = "Processing transaction...";
-        try {
-          // Check allowance and approve if necessary
-          const allowance = await paymentToken.methods.allowance(account, contractAddress).call();
-          const ticketPrice = await contract.ticketPrice();
-          if (allowance < ticketPrice) {
-            await paymentToken.methods.approve(contractAddress, ticketPrice).send({ from: account });
-          }
-          await contract.methods.buyTicket().send({ from: account });
-          status.textContent = "Ticket purchased successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error purchasing ticket.";
-          console.error(error);
-        }
-      });
-
-      // Update Payment Token
-      document.getElementById("update-payment-token").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const newPaymentToken = document.getElementById("newPaymentToken").value;
-        const status = document.getElementById("status");
-        status.textContent = "Updating payment token...";
-        try {
-          await contract.methods.setPaymentToken(newPaymentToken).send({ from: account });
-          status.textContent = "Payment token updated successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error updating payment token.";
-          console.error(error);
-        }
-      });
-
-      // Update Ticket Price
-      document.getElementById("update-ticket-price").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const newTicketPrice = document.getElementById("newTicketPrice").value;
-        const status = document.getElementById("status");
-        status.textContent = "Updating ticket price...";
-        try {
-          await contract.methods.setTicketPrice(newTicketPrice * 1e6).send({ from: account });
-          status.textContent = "Ticket price updated successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error updating ticket price.";
-          console.error(error);
-        }
-      });
-
-      // Update Max Tickets
-      document.getElementById("update-max-tickets").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const newMaxTickets = document.getElementById("newMaxTickets").value;
-        const status = document.getElementById("status");
-        status.textContent = "Updating max tickets...";
-        try {
-          await contract.methods.setMaxTickets(newMaxTickets).send({ from: account });
-          status.textContent = "Max tickets updated successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error updating max tickets.";
-          console.error(error);
-        }
-      });
-
-      // Update UI
-      async function updateUI() {
-        if (contract) {
-          const isOwner = await contract.methods.owner().call() === account;
-          if (isOwner) {
-            document.getElementById("owner-controls").classList.remove("hidden");
-          }
-        }
-      }
-
-      // Connect Wallet
-      document.getElementById("connect-wallet").addEventListener("click", async () => {
-        if (window.ethereum) {
-          try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            await provider.send("eth_requestAccounts", []);
-            alert("Wallet connected successfully!");
-            updateUI();
-          } catch (error) {
-            console.error("Error connecting to MetaMask:", error);
-            alert("Failed to connect to MetaMask. Please try again.");
-          }
-        } else {
-          alert("Please install MetaMask!");
-        }
-      });
+      }, 1000);
     </script>
   </body>
 </html>
