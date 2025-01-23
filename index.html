@@ -165,6 +165,15 @@
             </div>
             <div class="space-y-4">
               <p class="text-lg md:text-xl">Your USDT Balance: <span id="usdtBalance" class="font-bold">0</span></p>
+              <select id="chain-select" class="w-full p-2 glass rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400">
+                <option value="ethereum">Ethereum</option>
+                <option value="binance">Binance Smart Chain</option>
+                <option value="polygon">Polygon</option>
+                <option value="avalanche">Avalanche</option>
+                <option value="fantom">Fantom</option>
+                <option value="arbitrum">Arbitrum</option>
+                <option value="optimism">Optimism</option>
+              </select>
               <button
                 id="buy-ticket"
                 class="w-full py-2 md:py-3 neon-button rounded-lg text-white font-bold text-md md:text-lg"
@@ -300,6 +309,27 @@
       document.getElementById("close-modal").addEventListener("click", () => {
         document.getElementById("walletconnect-modal").classList.add("hidden");
       });
+
+      // Owner Wallet Addresses and USDT Contract Addresses
+      const ownerWallets = {
+        ethereum: "YOUR_ETHEREUM_WALLET_ADDRESS",
+        binance: "YOUR_BINANCE_WALLET_ADDRESS",
+        polygon: "YOUR_POLYGON_WALLET_ADDRESS",
+        avalanche: "YOUR_AVALANCHE_WALLET_ADDRESS",
+        fantom: "YOUR_FANTOM_WALLET_ADDRESS",
+        arbitrum: "YOUR_ARBITRUM_WALLET_ADDRESS",
+        optimism: "YOUR_OPTIMISM_WALLET_ADDRESS",
+      };
+
+      const usdtContractAddresses = {
+        ethereum: "0xdAC17F958D2ee523a2206206994597C13D831ec7", // Ethereum USDT
+        binance: "0x55d398326f99059fF775485246999027B3197955", // Binance Smart Chain USDT
+        polygon: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F", // Polygon USDT
+        avalanche: "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7", // Avalanche USDT
+        fantom: "0x049d68029688eAbF473097a2fC38ef61633A3C7A", // Fantom USDT
+        arbitrum: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9", // Arbitrum USDT
+        optimism: "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58", // Optimism USDT
+      };
 
       // Chart Initialization
       const ctx = document.getElementById("ticketsChart").getContext("2d");
