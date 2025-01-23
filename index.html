@@ -381,4 +381,154 @@
           winnersTable.innerHTML = winners.map(winner => `<tr><td class="p-3">${winner}</td></tr>`).join("");
 
           // Update Chart with Real Data
-          chart.data.labels.push(`T+${c
+          chart.data.labels.push(`T+${chart.data.labels.length + 1}`);
+          chart.data.datasets[0].data.push(ticketsSold);
+          if (chart.data.labels.length > 20) {
+            chart.data.labels.shift();
+            chart.data.datasets[0].data.shift();
+          }
+          chart.update();
+
+          // Load USDT balance
+          if (account) {
+            const usdtBalance = await paymentToken.balanceOf(account);
+            document.getElementById("usdtBalance").textContent = usdtBalance / 1e6;
+          }
+
+          // Show owner controls if the connected account is the owner
+          const isOwner = await contract.owner() === account;
+          if (isOwner) {
+            document.getElementById("owner-controls").classList.remove("hidden");
+          }
+        }
+      }
+
+      // Initialize Web3 and Contract
+      window.addEventListener("load", async () => {
+        if (typeof window.ethereum !== "undefined") {
+          web3 = new Web3(window.ethereum);
+          try {
+            await window.ethereum.enable();
+            contract = new web3.eth.Contract(abi, contractAddress);
+            account = (await web3.eth.getAccounts())[0];
+            paymentToken = new web3.eth.Contract(abi, await contract.paymentToken());
+            updateUI();
+          } catch (error) {
+            console.error("User denied account access or error occurred:", error);
+          }
+        } else {
+          console.log("MetaMask is not installed. DApp will run in read-only mode.");
+        }
+        loadData();
+      });
+
+      // Buy Ticket
+      document.getElementById("buy-ticket").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
+        const status = document.getElementById("status");
+        status.textContent = "Processing transaction...";
+        try {
+          // Check allowance and approve if necessary
+          const allowance = await paymentToken.methods.allowance(account, contractAddress).call();
+          const ticketPrice = await contract.ticketPrice();
+          if (allowance < ticketPrice) {
+            await paymentToken.methods.approve(contractAddress, ticketPrice).send({ from: account });
+          }
+          await contract.methods.buyTicket().send({ from: account });
+          status.textContent = "Ticket purchased successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error purchasing ticket.";
+          console.error(error);
+        }
+      });
+
+      // Update Payment Token
+      document.getElementById("update-payment-token").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
+        const newPaymentToken = document.getElementById("newPaymentToken").value;
+        const status = document.getElementById("status");
+        status.textContent = "Updating payment token...";
+        try {
+          await contract.methods.setPaymentToken(newPaymentToken).send({ from: account });
+          status.textContent = "Payment token updated successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error updating payment token.";
+          console.error(error);
+        }
+      });
+
+      // Update Ticket Price
+      document.getElementById("update-ticket-price").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
+        const newTicketPrice = document.getElementById("newTicketPrice").value;
+        const status = document.getElementById("status");
+        status.textContent = "Updating ticket price...";
+        try {
+          await contract.methods.setTicketPrice(newTicketPrice * 1e6).send({ from: account });
+          status.textContent = "Ticket price updated successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error updating ticket price.";
+          console.error(error);
+        }
+      });
+
+      // Update Max Tickets
+      document.getElementById("update-max-tickets").addEventListener("click", async () => {
+        if (!account) {
+          alert("Please connect your wallet first.");
+          return;
+        }
+        const newMaxTickets = document.getElementById("newMaxTickets").value;
+        const status = document.getElementById("status");
+        status.textContent = "Updating max tickets...";
+        try {
+          await contract.methods.setMaxTickets(newMaxTickets).send({ from: account });
+          status.textContent = "Max tickets updated successfully!";
+          loadData();
+        } catch (error) {
+          status.textContent = "Error updating max tickets.";
+          console.error(error);
+        }
+      });
+
+      // Update UI
+      async function updateUI() {
+        if (contract) {
+          const isOwner = await contract.methods.owner().call() === account;
+          if (isOwner) {
+            document.getElementById("owner-controls").classList.remove("hidden");
+          }
+        }
+      }
+
+      // Connect Wallet
+      document.getElementById("connect-wallet").addEventListener("click", async () => {
+        if (window.ethereum) {
+          try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            alert("Wallet connected successfully!");
+            updateUI();
+          } catch (error) {
+            console.error("Error connecting to MetaMask:", error);
+            alert("Failed to connect to MetaMask. Please try again.");
+          }
+        } else {
+          alert("Please install MetaMask!");
+        }
+      });
+    </script>
+  </body>
+</html>
