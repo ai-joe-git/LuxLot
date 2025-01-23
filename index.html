@@ -89,6 +89,7 @@
             <a href="#winners" class="text-lg hover:text-purple-400 transition-all">Winners</a>
             <a href="#rules" class="text-lg hover:text-purple-400 transition-all">Rules</a>
             <a href="#about" class="text-lg hover:text-purple-400 transition-all">About</a>
+            <a href="#faq" class="text-lg hover:text-purple-400 transition-all">FAQ</a>
           </div>
           <button id="menu-toggle" class="md:hidden text-purple-400 hover:text-purple-200 focus:outline-none">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,6 +105,7 @@
           <a href="#winners" class="block text-lg hover:text-purple-400 transition-all">Winners</a>
           <a href="#rules" class="block text-lg hover:text-purple-400 transition-all">Rules</a>
           <a href="#about" class="block text-lg hover:text-purple-400 transition-all">About</a>
+          <a href="#faq" class="block text-lg hover:text-purple-400 transition-all">FAQ</a>
         </div>
       </div>
     </nav>
@@ -230,16 +232,30 @@
         <div class="text-left space-y-4">
           <p class="text-lg md:text-xl">1. Each ticket costs <span class="font-bold">350 USDT</span>.</p>
           <p class="text-lg md:text-xl">2. Only <span class="font-bold">1,000 tickets</span> will be sold.</p>
-          <p class="text-lg md:text-xl">3. Once all tickets are sold, the lottery will close, and a winner will be selected randomly.</p>
+          <p class="text-lg md:text-xl">3. Once all tickets are sold, the lottery will close, and a winner will be selected randomly by the smart contract.</p>
           <p class="text-lg md:text-xl">4. The winner will receive the <span class="font-bold">Rolex Daytona Yellow Gold</span>.</p>
           <p class="text-lg md:text-xl">5. USDT paid for tickets will be sent directly to the contract owner's wallet.</p>
-          <p class="text-lg md:text-xl">6. Only the contract owner can pick the winner.</p>
-          <p class="text-lg md:text-xl">7. By participating, you agree to these rules and the terms of the lottery.</p>
+          <p class="text-lg md:text-xl">6. By participating, you agree to these rules and the terms of the lottery.</p>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div id="faq" class="glass p-6 md:p-8 rounded-3xl mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">FAQ</h2>
+        <div class="text-left space-y-4">
+          <p class="text-lg md:text-xl"><span class="font-bold">Q: How is the winner selected?</span></p>
+          <p class="text-lg md:text-xl">A: The winner is selected randomly by the smart contract once all tickets are sold.</p>
+          <p class="text-lg md:text-xl"><span class="font-bold">Q: How can I prove that I am the winner?</span></p>
+          <p class="text-lg md:text-xl">A: The winner will be announced on the blockchain. To claim your prize, you will need to send a message through the official Telegram chat of the dApp with your wallet address and a signed message proving ownership of the address.</p>
+          <p class="text-lg md:text-xl"><span class="font-bold">Q: What happens if not all tickets are sold?</span></p>
+          <p class="text-lg md:text-xl">A: If not all tickets are sold within a specified time frame, the lottery will be canceled, and all participants will be refunded their USDT.</p>
+          <p class="text-lg md:text-xl"><span class="font-bold">Q: How do I connect my wallet?</span></p>
+          <p class="text-lg md:text-xl">A: Click the "Connect Wallet" button and follow the prompts in your MetaMask or other Ethereum wallet.</p>
         </div>
       </div>
 
       <!-- About Section -->
-      <div id="about" class="glass p-6 md:p-8 rounded-3xl">
+      <div id="about" class="glass p-6 md:p-8 rounded-3xl mb-8">
         <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">About the Lottery</h2>
         <p class="text-lg md:text-xl mb-4">
           Welcome to the <span class="font-bold">Rolex Daytona Lottery</span>, where luxury meets opportunity! This exclusive event gives you the chance to win the iconic <span class="font-bold">Rolex Daytona Yellow Gold</span>, a timepiece synonymous with precision, elegance, and status.
@@ -251,6 +267,42 @@
           Don't miss your chance to own this masterpiece. Enter the lottery today and let fate decide!
         </p>
       </div>
+
+      <!-- Terms and Conditions Section -->
+      <div id="terms" class="glass p-6 md:p-8 rounded-3xl mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 neon-text">Terms and Conditions</h2>
+        <div class="text-left space-y-4">
+          <p class="text-lg md:text-xl">1. By participating in the Rolex Daytona Lottery, you agree to these terms and conditions.</p>
+          <p class="text-lg md:text-xl">2. The lottery is open to individuals who are 18 years of age or older.</p>
+          <p class="text-lg md:text-xl">3. The lottery is conducted on the Ethereum blockchain, and all transactions are final and irreversible.</p>
+          <p class="text-lg md:text-xl">4. The winner will be selected randomly by the smart contract and announced on the blockchain.</p>
+          <p class="text-lg md:text-xl">5. The winner must prove their identity by sending a signed message from their wallet address through the official Telegram chat of the dApp.</p>
+          <p class="text-lg md:text-xl">6. The Rolex Daytona Yellow Gold will be shipped to the winner's provided address within 30 days of the lottery closing.</p>
+          <p class="text-lg md:text-xl">7. The lottery organizers reserve the right to cancel or modify the lottery at any time due to unforeseen circumstances.</p>
+          <p class="text-lg md:text-xl">8. All decisions made by the lottery organizers are final and binding.</p>
+        </div>
+      </div>
+
+      <!-- Footer with Social Links -->
+      <footer class="glass p-6 md:p-8 rounded-3xl">
+        <div class="flex justify-center space-x-8">
+          <a href="https://twitter.com" target="_blank" class="text-purple-400 hover:text-purple-200 transition-all">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M22.23 5.924c-.736.326-1.527.546-2.357.646.847-.508 1.498-1.312 1.804-2.27-.793.47-1.67.812-2.606.996-.748-.797-1.814-1.296-2.996-1.296-2.266 0-4.103 1.837-4.103 4.103 0 .322.036.635.106.935-3.41-.17-6.433-1.804-8.457-4.287-.353.606-.555 1.31-.555 2.062 0 1.424.724 2.68 1.825 3.415-.673-.02-1.305-.206-1.86-.512v.052c0 1.988 1.414 3.647 3.292 4.023-.344.094-.707.144-1.08.144-.264 0-.52-.026-.77-.074.52 1.624 2.036 2.806 3.83 2.84-1.404 1.1-3.172 1.756-5.094 1.756-.33 0-.658-.02-.98-.057 1.816 1.164 3.973 1.843 6.29 1.843 7.547 0 11.675-6.253 11.675-11.675 0-.178-.004-.355-.012-.53.802-.58 1.497-1.304 2.047-2.128z" />
+            </svg>
+          </a>
+          <a href="https://telegram.org" target="_blank" class="text-purple-400 hover:text-purple-200 transition-all">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.14-.26.26-.428.26l.203-3.004 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.87 4.326-2.962-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.941z" />
+            </svg>
+          </a>
+          <a href="https://discord.com" target="_blank" class="text-purple-400 hover:text-purple-200 transition-all">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.211.375-.445.865-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.249.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 1.34-.666.075.075 0 0 1 .077 0 14.04 14.04 0 0 0 4.077 1.153.075.075 0 0 0 .079-.038 19.599 19.599 0 0 0 1.226-1.994.077.077 0 0 0-.041-.106 13.105 13.105 0 0 1-1.872-.892.077.077 0 0 1-.007-.128 10.197 10.197 0 0 0 1.34-.666.075.075 0 0 1 .078 0 14.04 14.04 0 0 0 4.078 1.153.076.076 0 0 0 .079-.038c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.11 13.11 0 0 1-1.872-.892.077.077 0 0 1-.007-.128 10.197 10.197 0 0 0 1.34-.666.075.075 0 0 1 .077 0 14.04 14.04 0 0 0 4.078 1.153.076.076 0 0 0 .079-.038 19.836 19.836 0 0 0 2.254-4.941.07.07 0 0 0-.032-.079zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.419 0 1.333-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.419 0 1.333-.956 2.419-2.157 2.419z" />
+            </svg>
+          </a>
+        </div>
+      </footer>
     </div>
 
     <script>
@@ -329,154 +381,4 @@
           winnersTable.innerHTML = winners.map(winner => `<tr><td class="p-3">${winner}</td></tr>`).join("");
 
           // Update Chart with Real Data
-          chart.data.labels.push(`T+${chart.data.labels.length + 1}`);
-          chart.data.datasets[0].data.push(ticketsSold);
-          if (chart.data.labels.length > 20) {
-            chart.data.labels.shift();
-            chart.data.datasets[0].data.shift();
-          }
-          chart.update();
-
-          // Load USDT balance
-          if (account) {
-            const usdtBalance = await paymentToken.balanceOf(account);
-            document.getElementById("usdtBalance").textContent = usdtBalance / 1e6;
-          }
-
-          // Show owner controls if the connected account is the owner
-          const isOwner = await contract.owner() === account;
-          if (isOwner) {
-            document.getElementById("owner-controls").classList.remove("hidden");
-          }
-        }
-      }
-
-      // Initialize Web3 and Contract
-      window.addEventListener("load", async () => {
-        if (typeof window.ethereum !== "undefined") {
-          web3 = new Web3(window.ethereum);
-          try {
-            await window.ethereum.enable();
-            contract = new web3.eth.Contract(abi, contractAddress);
-            account = (await web3.eth.getAccounts())[0];
-            paymentToken = new web3.eth.Contract(abi, await contract.paymentToken());
-            updateUI();
-          } catch (error) {
-            console.error("User denied account access or error occurred:", error);
-          }
-        } else {
-          console.log("MetaMask is not installed. DApp will run in read-only mode.");
-        }
-        loadData();
-      });
-
-      // Buy Ticket
-      document.getElementById("buy-ticket").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const status = document.getElementById("status");
-        status.textContent = "Processing transaction...";
-        try {
-          // Check allowance and approve if necessary
-          const allowance = await paymentToken.methods.allowance(account, contractAddress).call();
-          const ticketPrice = await contract.ticketPrice();
-          if (allowance < ticketPrice) {
-            await paymentToken.methods.approve(contractAddress, ticketPrice).send({ from: account });
-          }
-          await contract.methods.buyTicket().send({ from: account });
-          status.textContent = "Ticket purchased successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error purchasing ticket.";
-          console.error(error);
-        }
-      });
-
-      // Update Payment Token
-      document.getElementById("update-payment-token").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const newPaymentToken = document.getElementById("newPaymentToken").value;
-        const status = document.getElementById("status");
-        status.textContent = "Updating payment token...";
-        try {
-          await contract.methods.setPaymentToken(newPaymentToken).send({ from: account });
-          status.textContent = "Payment token updated successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error updating payment token.";
-          console.error(error);
-        }
-      });
-
-      // Update Ticket Price
-      document.getElementById("update-ticket-price").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const newTicketPrice = document.getElementById("newTicketPrice").value;
-        const status = document.getElementById("status");
-        status.textContent = "Updating ticket price...";
-        try {
-          await contract.methods.setTicketPrice(newTicketPrice * 1e6).send({ from: account });
-          status.textContent = "Ticket price updated successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error updating ticket price.";
-          console.error(error);
-        }
-      });
-
-      // Update Max Tickets
-      document.getElementById("update-max-tickets").addEventListener("click", async () => {
-        if (!account) {
-          alert("Please connect your wallet first.");
-          return;
-        }
-        const newMaxTickets = document.getElementById("newMaxTickets").value;
-        const status = document.getElementById("status");
-        status.textContent = "Updating max tickets...";
-        try {
-          await contract.methods.setMaxTickets(newMaxTickets).send({ from: account });
-          status.textContent = "Max tickets updated successfully!";
-          loadData();
-        } catch (error) {
-          status.textContent = "Error updating max tickets.";
-          console.error(error);
-        }
-      });
-
-      // Update UI
-      async function updateUI() {
-        if (contract) {
-          const isOwner = await contract.methods.owner().call() === account;
-          if (isOwner) {
-            document.getElementById("owner-controls").classList.remove("hidden");
-          }
-        }
-      }
-
-      // Connect Wallet
-      document.getElementById("connect-wallet").addEventListener("click", async () => {
-        if (window.ethereum) {
-          try {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            await provider.send("eth_requestAccounts", []);
-            alert("Wallet connected successfully!");
-            updateUI();
-          } catch (error) {
-            console.error("Error connecting to MetaMask:", error);
-            alert("Failed to connect to MetaMask. Please try again.");
-          }
-        } else {
-          alert("Please install MetaMask!");
-        }
-      });
-    </script>
-  </body>
-</html>
+          chart.data.labels.push(`T+${c
